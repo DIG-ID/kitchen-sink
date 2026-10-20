@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress Theme">
+    <description>PHPCS rules for this WordPress theme.</description>
+
+    <!-- Paths to scan -->
+    <file>./</file>
+
+    <!-- PHP only. JS/SASS indentation is governed by .editorconfig (spaces),
+         so WPCS tab rules must not be applied to those files. -->
+    <arg name="extensions" value="php"/>
+
+    <!-- Exclude vendor/node_modules/builds.
+         Patterns are matched against absolute paths, so they are anchored to
+         the theme root (./) — a bare */public/* would exclude the whole theme
+         when the site lives under Local's app/public/ directory. -->
+    <exclude-pattern>./vendor/*</exclude-pattern>
+    <exclude-pattern>./node_modules/*</exclude-pattern>
+    <exclude-pattern>./dist/*</exclude-pattern>
+    <exclude-pattern>./php-stubs/*</exclude-pattern>
+
+    <!-- Use WordPress rules -->
+    <rule ref="WordPress-Core"/>
+    <rule ref="WordPress-Docs"/>
+    <rule ref="WordPress-Extra"/>
+
+    <!-- You can tweak sniffs or add excludes per project here -->
+
+    <!-- Theme text domain (optional if you want to enforce it) -->
+    <!--
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="string" value="your-theme-slug"/>
+        </properties>
+    </rule>
+    -->
+</ruleset>

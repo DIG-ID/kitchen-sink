@@ -1,0 +1,53 @@
+// Login form elements — inputs, password toggle and buttons.
+// Core selectors: .login .input, .password-input, .wp-pwd, .wp-hide-pw,
+// .button-primary, .forgetmenot. Core styles: wp-admin/css/forms.css + buttons.css.
+
+.login
+  form
+    @apply px-6 lg:px-12 py-10 bg-digid-light-grey rounded-lg flex flex-col gap-1
+    label
+      @apply text-digid-black text-xs uppercase mb-2
+    .input
+      @apply rounded-[30px] bg-digid-light-grey text-digid-black border-digid-black px-4 py-2 leading-none mx-0 text-base
+
+    input[type=checkbox]
+      @apply bg-digid-light-grey text-digid-black border-digid-black
+      &:checked
+        @apply bg-digid-turquoise border-digid-turquoise
+  #login
+    p.forgetmenot
+      @apply mb-2
+      label
+        @apply text-digid-black text-xs uppercase
+  .button-primary
+    @apply float-none
+
+  #pass-strength-result
+    @apply mt-3
+
+  .reset-pass-submit
+    .button
+      @apply w-full mb-3
+
+  .admin-email__heading
+    @apply uppercase text-base md:text-lg text-digid-black
+  .admin-email__details
+    @apply text-digid-black
+  .admin-email__actions-primary
+    @apply flex flex-col md:flex-row gap-2 md:gap-4
+
+  .admin-email__actions-secondary
+    a
+      @apply text-digid-pink
+//Buttons
+.wp-core-ui
+  .button
+    @apply text-xs uppercase rounded-[30px] transition-all duration-500 ease-in-out text-center bg-digid-black text-digid-light-grey border-digid-black hover:bg-digid-pink hover:border-digid-pink hover:text-digid-light-grey
+    &.button-large
+     @apply text-xs leading-none min-h-[initial] py-4 md:px-16 w-full
+  .button-primary
+    @apply bg-digid-turquoise border-digid-turquoise text-digid-black
+  .button-secondary
+    @apply  bg-digid-light-grey border-digid-black text-digid-black hover:bg-digid-pink hover:border-digid-pink
+
+

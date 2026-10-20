@@ -1,0 +1,44 @@
+{
+  "assets/js/main.js": {
+    "file": "js/main-H1POtJgu.js",
+    "name": "main",
+    "src": "assets/js/main.js",
+    "isEntry": true
+  },
+  "assets/sass/admin-bar.sass": {
+    "file": "css/admin-bar-DceQObBi.css",
+    "name": "admin-bar",
+    "names": [
+      "admin-bar.css"
+    ],
+    "src": "assets/sass/admin-bar.sass",
+    "isEntry": true
+  },
+  "assets/sass/admin-dashboard.sass": {
+    "file": "css/admin-dashboard-C2mFVT4Y.css",
+    "name": "admin-dashboard",
+    "names": [
+      "admin-dashboard.css"
+    ],
+    "src": "assets/sass/admin-dashboard.sass",
+    "isEntry": true
+  },
+  "assets/sass/admin-login.sass": {
+    "file": "css/admin-login-CdxI7M9y.css",
+    "name": "admin-login",
+    "names": [
+      "admin-login.css"
+    ],
+    "src": "assets/sass/admin-login.sass",
+    "isEntry": true
+  },
+  "assets/sass/main.sass": {
+    "file": "css/main-CJBDp_Ak.css",
+    "name": "main",
+    "names": [
+      "main.css"
+    ],
+    "src": "assets/sass/main.sass",
+    "isEntry": true
+  }
+}

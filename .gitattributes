@@ -1,0 +1,3 @@
+# Auto detect text files and force LF line endings on checkout,
+# regardless of each dev's local core.autocrlf setting.
+* text=auto eol=lf

@@ -1,0 +1,35 @@
+{
+  "name": "kitchen-sink",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "watch": "vite build --watch --mode development",
+    "prod": "vite build",
+    "php:lint": "php vendor/bin/phpcs -p",
+    "php:fix": "php vendor/bin/phpcbf -p",
+    "zip": "git archive --format=zip --prefix=kitchen-sink/ --output=kitchen-sink.zip HEAD",
+    "postinstall": "composer install"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "baseline-browser-mapping": "^2.10.7",
+    "sass": "^1.77.6",
+    "tailwindcss": "^3.4.4",
+    "vite": "^8.3.4"
+  },
+  "dependencies": {
+    "@fancyapps/ui": "^5.0.36",
+    "gsap": "^3.12.5",
+    "imagesloaded": "^5.0.0",
+    "isotope-layout": "^3.0.6",
+    "lenis": "^1.1.6",
+    "swiper": "^12.1.2"
+  }
+}

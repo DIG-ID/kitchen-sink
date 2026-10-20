@@ -1,0 +1,43 @@
+// wp-admin branding — dashboard, admin bar and UI refinements.
+// Loaded on every admin screen via admin_enqueue_scripts (admin-dashboard bundle).
+// Keep this bundle lean: login screens never load it and vice versa.
+
+body
+  background-color: $primary-grey
+
+a
+  @apply text-[#0c9b97]
+  &:hover,
+  &:focus
+    @apply text-digid-pink
+
+
+#adminmenu,
+#adminmenuback,
+#adminmenuwrap
+  @apply bg-digid-black
+
+
+
+#adminmenu .wp-has-current-submenu .wp-submenu,
+#adminmenu .wp-has-current-submenu.opensub .wp-submenu,
+#adminmenu .wp-submenu
+  @apply bg-[#0c171c]
+
+
+#adminmenu
+  li.wp-has-current-submenu a.wp-has-current-submenu
+    @apply bg-digid-pink
+
+// Hover/open/focus state — mirror core's FULL selector group (colors.css
+// line ~330): a:hover paints the anchor itself on instant hover; the
+// li/.opensub selectors cover the JS-managed submenu-open state.
+#adminmenu a:hover,
+#adminmenu li.menu-top:hover,
+#adminmenu li.opensub > a.menu-top,
+#adminmenu li > a.menu-top:focus
+  @apply bg-digid-turquoise
+
+
+.theme-browser .theme.active .theme-name
+  @apply bg-digid-black

@@ -1,0 +1,33 @@
+// dig.id welcome widget (registered in inc/theme-admin-settings.php).
+#kitchensink_welcome
+  .postbox-header .hndle
+    @apply text-digid-black
+
+  .kitchensink-welcome
+    @apply flex flex-col items-start gap-2 py-2
+
+    &__content
+      @apply flex items-center justify-between w-full gap-4
+
+
+    &__logo
+      @apply h-14 w-auto mb-1 px-12
+
+    &__greeting
+      @apply font-semibold text-digid-black m-0
+
+    &__actions
+      @apply mt-2 mb-0 flex items-center gap-2
+
+    // Disabled placeholder button with a CSS "coming soon" tooltip
+    // (text comes from the data-tooltip attribute).
+    &__soon
+      @apply relative cursor-not-allowed opacity-60
+
+      &::after
+        content: attr(data-tooltip)
+        @apply absolute bottom-full left-1/2 mb-2 hidden -translate-x-1/2 whitespace-nowrap rounded bg-digid-black px-2 py-1 text-xs normal-case text-digid-light-grey
+
+      &:hover::after,
+      &:focus::after
+        @apply block

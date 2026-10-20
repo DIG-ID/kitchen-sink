@@ -1,0 +1,27 @@
+// Admin-only variables — imported first by admin-login.sass and
+// admin-dashboard.sass, so they never leak into the front-end bundle.
+
+// ---------------------------------------------------------------------------
+// Sass variables (compile time) — use these across the _admin/ partials.
+// ---------------------------------------------------------------------------
+
+@use "sass:color"
+
+$primary-turquoise: #00CCCC
+$primary-grey: #F8F8F8
+$secondary-pink: #EA526C
+$secondary-black: #12232B
+$secondary-grey: #5B7376
+
+// ---------------------------------------------------------------------------
+// WP core CSS custom properties (runtime) — WordPress 6.9+ colors buttons,
+// links and focus rings on login/admin with these variables (defined by
+// admin-schemes.css on body.admin-color-*). Redefining them here re-brands
+// the whole UI without styling individual elements.
+// ---------------------------------------------------------------------------
+body.login,
+body.wp-admin
+  --wp-admin-theme-color: #{$primary-turquoise}
+  --wp-admin-theme-color--rgb: #{color.channel($primary-turquoise, "red", $space: rgb)}, #{color.channel($primary-turquoise, "green", $space: rgb)}, #{color.channel($primary-turquoise, "blue", $space: rgb)}
+  --wp-admin-theme-color-darker-10: #{color.adjust($primary-turquoise, $lightness: -5%)}
+  --wp-admin-theme-color-darker-20: #{color.adjust($primary-turquoise, $lightness: -10%)}

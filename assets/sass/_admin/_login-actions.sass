@@ -1,0 +1,19 @@
+// Per-action overrides — target a specific wp-login.php screen via the
+// body class login-action-{action}:
+//   login-action-login          sign-in form
+//   login-action-lostpassword   request password reset
+//   login-action-checkemail     "check your email" confirmation
+//   login-action-rp / -resetpass  set new password (#resetpassform, .pw-weak, #pass-strength-result)
+//   login-action-register       registration (#registerform), when enabled
+//
+// Example:
+// body.login-action-lostpassword
+//     #login form
+//         border-top: 4px solid red
+
+.login
+  #nav,
+  #backtoblog
+    @apply text-center
+    a
+      @apply text-digid-light-grey text-center transition-all duration-500 ease-in-out hover:text-digid-pink active:text-digid-pink  visited:text-digid-light-grey
