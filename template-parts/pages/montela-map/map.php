@@ -2,8 +2,9 @@
 /**
  * Map Section in the Montela Map Page Template.
  *
- * Intro (title, button, description), the interactive map module and
- * a features bar. Content comes from the ACF group map_section.
+ * Intro (title, button, description), the interactive map module
+ * (summer/winter) and a features bar. Content comes from the ACF group
+ * map_section.
  *
  * @package kitchensink
  * @subpackage Section
@@ -55,8 +56,20 @@ $map_icon_set = array( 'gondola', 'bus', 'parking', 'playground', 'lounge', 'vil
 				'template-parts/modules/interactive-map',
 				null,
 				array(
-					'image_id' => ! empty( $map_section['map_image'] ) ? $map_section['map_image'] : 0,
-					'pins'     => ! empty( $map_section['pins'] ) ? $map_section['pins'] : array(),
+					'seasons' => array(
+						array(
+							'key'      => 'summer',
+							'label'    => __( 'Summer', 'kitchensink' ),
+							'image_id' => ! empty( $map_section['map_image'] ) ? $map_section['map_image'] : 0,
+							'pins'     => ! empty( $map_section['pins'] ) ? $map_section['pins'] : array(),
+						),
+						array(
+							'key'      => 'winter',
+							'label'    => __( 'Winter', 'kitchensink' ),
+							'image_id' => ! empty( $map_section['map_image_winter'] ) ? $map_section['map_image_winter'] : 0,
+							'pins'     => ! empty( $map_section['pins_winter'] ) ? $map_section['pins_winter'] : array(),
+						),
+					),
 				)
 			);
 			?>

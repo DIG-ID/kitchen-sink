@@ -7,7 +7,8 @@
  *
  * Inputs: zoom/reset/fullscreen buttons, wheel (zooms towards the cursor;
  * at minimum zoom it passes through to the page/Lenis), pinch, mouse
- * drag-to-pan, hover/tap on pins, Esc / outside click to close.
+ * drag-to-pan, hover/tap on pins, Esc / outside click to close, season
+ * switch (summer/winter layers).
  */
 
 const ZOOM_STEP = 1.5;
@@ -35,7 +36,12 @@ function initMap(map) {
   const zoomOutBtn = map.querySelector('[data-map-zoom-out]');
   const resetBtn = map.querySelector('[data-map-reset]');
   const fullscreenBtn = map.querySelector('[data-map-fullscreen]');
+  const hint = map.querySelector('[data-map-hint]');
   const pins = [...map.querySelectorAll('[data-map-pin]')];
+  const images = [...canvas.querySelectorAll('img')];
+  const layers = [...map.querySelectorAll('[data-map-layer]')];
+  const seasonBtns = [...map.querySelectorAll('[data-map-season]')];
+  const activeLayer = () => layers.find((layer) => layer.classList.contains('is-active')) || layers[0];
 
   // Artwork ratio from the width/height attributes (known before load).
   const imageWidth = parseFloat(image.getAttribute('width'));
@@ -67,7 +73,9 @@ function initMap(map) {
       return;
     }
     sizesUpgraded = true;
-    image.sizes = `${Math.ceil(viewport.clientWidth * zoomMax())}px`;
+    images.forEach((img) => {
+      img.sizes = `${Math.ceil(viewport.clientWidth * zoomMax())}px`;
+    });
   }
 
   /**
@@ -145,9 +153,10 @@ function initMap(map) {
     let focusY = 50;
     let initialZoom = zoomMin;
 
-    if (mobileQuery.matches && pins.length) {
-      focusX = parseFloat(pins[0].style.getPropertyValue('--x'));
-      focusY = parseFloat(pins[0].style.getPropertyValue('--y'));
+    const firstPin = activeLayer()?.querySelector('[data-map-pin]');
+    if (mobileQuery.matches && firstPin) {
+      focusX = parseFloat(firstPin.style.getPropertyValue('--x'));
+      focusY = parseFloat(firstPin.style.getPropertyValue('--y'));
       initialZoom = clampZoom(zoomMin * MOBILE_ZOOM);
     }
 
@@ -167,12 +176,56 @@ function initMap(map) {
     setInitialView();
   });
 
+  // ---------------------------------------------------------------------------
+  // Wheel activation: the wheel only zooms after the map has been clicked,
+  // so scrolling the page never gets stuck on the map. Deactivates when the
+  // mouse leaves the map or on a click outside; always active in fullscreen.
+  // ---------------------------------------------------------------------------
+
+  let wheelActive = false;
+  let hintTimer = null;
+
+  function setWheelActive(active) {
+    wheelActive = active;
+    map.classList.toggle('is-wheel-active', active);
+    if (active) {
+      window.clearTimeout(hintTimer);
+      hint?.classList.remove('is-visible');
+    }
+  }
+
+  function showHint() {
+    if (!hint) {
+      return;
+    }
+    hint.classList.add('is-visible');
+    window.clearTimeout(hintTimer);
+    hintTimer = window.setTimeout(() => hint.classList.remove('is-visible'), 1500);
+  }
+
+  map.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'mouse') {
+      setWheelActive(true);
+    }
+  });
+
+  map.addEventListener('pointerleave', (event) => {
+    if (event.pointerType === 'mouse' && fullscreenElement() !== map) {
+      setWheelActive(false);
+    }
+  });
+
   /*
-   * Wheel = zoom towards the cursor. Only captured when the zoom actually
-   * changes, so at minimum zoom the page keeps scrolling. stopPropagation
-   * keeps Lenis (listening on window) from scrolling the page meanwhile.
+   * Wheel = zoom towards the cursor, once the map is active. Only captured
+   * when the zoom actually changes, so at minimum zoom the page keeps
+   * scrolling. stopPropagation keeps Lenis (listening on window) from
+   * scrolling the page meanwhile.
    */
   viewport.addEventListener('wheel', (event) => {
+    if (!wheelActive && fullscreenElement() !== map) {
+      showHint();
+      return;
+    }
     const factor = event.deltaY < 0 ? 1.2 : 1 / 1.2;
     const next = clampZoom(targetZoom * factor);
     if (Math.abs(next - targetZoom) < 0.001) {
@@ -388,11 +441,13 @@ function initMap(map) {
     }
   });
 
-  // Click outside the map closes the popup.
+  // Click outside the map closes the popup and deactivates the wheel.
   document.addEventListener('click', (event) => {
-    if (activePin && !map.contains(event.target)) {
-      closeCard();
+    if (map.contains(event.target)) {
+      return;
     }
+    closeCard();
+    setWheelActive(false);
   });
 
   // Follow the pin while panning/zooming.
@@ -406,6 +461,30 @@ function initMap(map) {
       positionCard();
     });
   }, { passive: true });
+
+  // ---------------------------------------------------------------------------
+  // Season switch: cross-fades the layers, keeping zoom and position (all
+  // seasons share the same artwork). Inactive layers are inert.
+  // ---------------------------------------------------------------------------
+
+  seasonBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const season = btn.dataset.mapSeason;
+      closeCard();
+
+      layers.forEach((layer) => {
+        const isActive = layer.dataset.mapLayer === season;
+        layer.classList.toggle('is-active', isActive);
+        layer.inert = !isActive;
+      });
+
+      seasonBtns.forEach((other) => {
+        const isActive = other === btn;
+        other.classList.toggle('is-active', isActive);
+        other.setAttribute('aria-pressed', String(isActive));
+      });
+    });
+  });
 
   // ---------------------------------------------------------------------------
   // Fullscreen

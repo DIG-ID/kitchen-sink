@@ -11,6 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/) (`MAJOR.M
 
 ---
 
+## [1.3.0] — 2026-10-21
+
+### Added
+- Summer/Winter switch on the Montela map, with its own image and pins per season.
+
+### Changed
+- The map only zooms with the mouse wheel after being clicked, so page scrolling is never interrupted.
+
+---
+
 ## [1.2.0] — 2026-10-21
 
 ### Added

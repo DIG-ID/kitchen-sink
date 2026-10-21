@@ -124,8 +124,8 @@ Antes de entregar código PHP, verificar com `npm run php:lint`. Usar `npm run p
 ### Page Template `page-templates/page-montela-map.php` — Montela Map CF (teste)
 JSON de importação e script de seed (WP-CLI) em `Montela Map/` (pasta gitignored).
 - `hero` group: `title` (text)
-- `map_section` group: `title` (text), `description` (textarea), `button` (link → array), `map_image` (image → ID)
-  - `pins` (repeater): `label`, `x`, `y` (number, % da imagem), `title`, `description`, `button` (link → array)
+- `map_section` group: `title` (text), `description` (textarea), `button` (link → array), `map_image` + `map_image_winter` (image → ID; sem imagem de inverno o switch Summer/Winter não aparece)
+  - `pins` / `pins_winter` (repeater): `label`, `x`, `y` (number, % da imagem), `title`, `description`, `button` (link → array)
   - `features` (repeater): `icon` (select: `gondola`/`bus`/`parking`/`playground`/`lounge`/`village` → `assets/images/montela-map/feature-*.svg`), `text`
 
 ---

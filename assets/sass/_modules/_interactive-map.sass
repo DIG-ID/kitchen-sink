@@ -46,6 +46,22 @@
   position: relative
   width: 100%
 
+// Season layers: the first one sets the canvas size, the others are
+// stacked on top of it; the active layer fades in.
+.interactive-map__layer
+  opacity: 0
+  visibility: hidden
+  transition: opacity 0.5s ease, visibility 0s linear 0.5s
+
+  & + &
+    position: absolute
+    inset: 0
+
+  &.is-active
+    opacity: 1
+    visibility: visible
+    transition: opacity 0.5s ease, visibility 0s
+
 .interactive-map__image
   display: block
   width: 100%
@@ -106,6 +122,29 @@
     transform: scale(0.7)
 
 // -----------------------------------------------------------------------------
+// Wheel hint: shown when the wheel is used before the map was clicked
+// -----------------------------------------------------------------------------
+
+.interactive-map__hint
+  position: absolute
+  top: 50%
+  left: 50%
+  z-index: 4
+  padding: 10px 20px
+  background: rgba(78, 60, 42, 0.85)
+  color: theme('colors.montela-cream')
+  font-size: 16px
+  line-height: 1.4
+  text-align: center
+  pointer-events: none
+  opacity: 0
+  transform: translate(-50%, -50%)
+  transition: opacity 0.3s ease
+
+  &.is-visible
+    opacity: 1
+
+// -----------------------------------------------------------------------------
 // Controls (Figma: white 48px circles, top right)
 // -----------------------------------------------------------------------------
 
@@ -152,6 +191,74 @@
 
   &[hidden]
     display: none
+
+// -----------------------------------------------------------------------------
+// Season switch (Figma "buttons": sage pill, active option in white)
+// -----------------------------------------------------------------------------
+
+.interactive-map__seasons
+  position: absolute
+  right: 1rem
+  bottom: 1rem
+  z-index: 5
+  display: flex
+  gap: 8px
+  padding: 4px
+  border-radius: 38px
+  background: theme('colors.montela-sage')
+  filter: drop-shadow(0 4px 2px rgba(0, 0, 0, 0.25))
+
+  @media (min-width: theme('screens.md'))
+    gap: 16px
+    padding: 6px
+
+  @media (min-width: theme('screens.xl'))
+    right: 57px
+    bottom: 52px
+
+.interactive-map__season
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 8px
+  padding: 4px 12px
+  border: 0
+  border-radius: 32px
+  background: transparent
+  color: theme('colors.montela-cream')
+  font-size: 16px
+  font-weight: 300
+  line-height: 32px
+  letter-spacing: 0.5px
+  cursor: pointer
+  transition: background-color 0.3s ease, color 0.3s ease
+
+  @media (min-width: theme('screens.md'))
+    width: 150px
+    padding: 6px 16px
+    font-size: 20px
+
+  &.is-active
+    background: #fff
+    color: theme('colors.montela-sage')
+    cursor: default
+
+  &:focus-visible
+    outline: 2px solid #fff
+    outline-offset: 2px
+
+// Figma icon used as a mask so it follows the button text colour.
+.interactive-map__season-icon
+  flex: none
+  width: 24px
+  height: 24px
+  background: currentColor
+  mask: var(--icon) center / contain no-repeat
+  transform: rotate(180deg)
+
+  @media (min-width: theme('screens.md'))
+    width: 32px
+    height: 32px
 
 // -----------------------------------------------------------------------------
 // Detail popup (Figma "popup": 442px, cream, sage border)
@@ -243,6 +350,8 @@
 
 @media (prefers-reduced-motion: reduce)
   .interactive-map__pin::after,
-  .interactive-map__control
+  .interactive-map__control,
+  .interactive-map__layer,
+  .interactive-map__season
     transition: none
     animation: none !important
