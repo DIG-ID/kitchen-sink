@@ -1,0 +1,248 @@
+// =============================================================================
+// Interactive map module (template-parts/modules/interactive-map.php)
+//
+// Pan  = native scroll of the viewport (both axes).
+// Zoom = JS sets the canvas width (%); pins are positioned in % so they
+//        follow the artwork while their hit-area keeps a tappable minimum.
+// =============================================================================
+
+.interactive-map
+  position: relative
+  font-family: theme('fontFamily.montela-sans')
+
+  // Fullscreen: the frame fills the screen instead of keeping its ratio.
+  &:fullscreen
+    background: theme('colors.montela-cream')
+
+    .interactive-map__viewport
+      height: 100%
+      aspect-ratio: auto
+
+.interactive-map__viewport
+  // Square on mobile, Figma frame ratio (1814 × 720) from md up.
+  aspect-ratio: 1 / 1
+  overflow: auto
+  overscroll-behavior: contain
+  // One-finger panning is native; pinch is handled in JS.
+  touch-action: pan-x pan-y
+  cursor: grab
+  user-select: none
+  scrollbar-width: none
+
+  &::-webkit-scrollbar
+    display: none
+
+  &:focus-visible
+    outline: 2px solid theme('colors.montela-sage')
+    outline-offset: 4px
+
+  &.is-dragging
+    cursor: grabbing
+
+  @media (min-width: theme('screens.md'))
+    aspect-ratio: 1814 / 720
+
+.interactive-map__canvas
+  position: relative
+  width: 100%
+
+.interactive-map__image
+  display: block
+  width: 100%
+  height: auto
+  max-width: none
+  pointer-events: none
+
+// -----------------------------------------------------------------------------
+// Pins: transparent hit-areas over the markers printed in the artwork
+// -----------------------------------------------------------------------------
+
+.interactive-map__pin
+  position: absolute
+  left: var(--x)
+  top: var(--y)
+  width: max(1.4%, 1.75rem)
+  aspect-ratio: 1
+  padding: 0
+  border: 0
+  border-radius: 50%
+  background: transparent
+  cursor: pointer
+  transform: translate(-50%, -50%)
+
+  &::after
+    content: ""
+    position: absolute
+    inset: -0.25rem
+    border: 2px solid #fff
+    border-radius: 50%
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.15), 0 0 14px rgba(255, 255, 255, 0.9)
+    opacity: 0
+    transform: scale(0.7)
+    transition: opacity 0.2s ease, transform 0.2s ease
+
+  &:hover::after,
+  &:focus-visible::after,
+  &.is-active::after
+    opacity: 1
+    transform: scale(1)
+
+  &:focus-visible
+    outline: none
+
+// Entry animation: staggered halo pulse when the map scrolls into view.
+.interactive-map.is-revealed .interactive-map__pin::after
+  animation: interactive-map-pulse 0.9s ease calc(var(--pin-index, 0) * 80ms) 1
+
+@keyframes interactive-map-pulse
+  0%
+    opacity: 0
+    transform: scale(0.7)
+  40%
+    opacity: 1
+    transform: scale(1.2)
+  100%
+    opacity: 0
+    transform: scale(0.7)
+
+// -----------------------------------------------------------------------------
+// Controls (Figma: white 48px circles, top right)
+// -----------------------------------------------------------------------------
+
+.interactive-map__controls
+  position: absolute
+  top: 1rem
+  right: 1rem
+  z-index: 5
+  display: flex
+  flex-direction: column
+  gap: 12px
+
+  @media (min-width: theme('screens.xl'))
+    top: 53px
+    right: 57px
+
+.interactive-map__control
+  display: grid
+  place-items: center
+  width: 48px
+  height: 48px
+  padding: 0
+  border: 0
+  border-radius: 50%
+  background: #fff
+  cursor: pointer
+  transition: transform 0.2s ease, opacity 0.2s ease
+
+  img
+    display: block
+    max-width: none
+
+  &:hover
+    transform: scale(1.06)
+
+  &:focus-visible
+    outline: 2px solid theme('colors.montela-sage')
+    outline-offset: 2px
+
+  &:disabled
+    opacity: 0.5
+    cursor: default
+    transform: none
+
+  &[hidden]
+    display: none
+
+// -----------------------------------------------------------------------------
+// Detail popup (Figma "popup": 442px, cream, sage border)
+// -----------------------------------------------------------------------------
+
+.interactive-map__card
+  position: absolute
+  left: 0
+  top: 0
+  z-index: 6
+  display: flex
+  flex-direction: column
+  width: min(442px, calc(100% - 2rem))
+  padding: 32px
+  border: 1px solid theme('colors.montela-sage')
+  background: theme('colors.montela-cream')
+  color: theme('colors.montela-brown')
+
+  &[hidden]
+    display: none
+
+  // Mobile: fixed bottom sheet instead of a floating card.
+  @media (max-width: calc(theme('screens.md') - 1px))
+    position: fixed
+    inset: auto 0.75rem 0.75rem
+    width: auto
+    padding: 24px
+
+.interactive-map__card-close
+  position: absolute
+  top: 0.5rem
+  right: 0.5rem
+  width: 2rem
+  height: 2rem
+  border: 0
+  border-radius: 50%
+  background: transparent
+  color: theme('colors.montela-sage')
+  font-size: 1.5rem
+  line-height: 1
+  cursor: pointer
+
+  &:hover,
+  &:focus-visible
+    background: rgba(143, 155, 135, 0.15)
+
+.interactive-map__card-body
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+  gap: 16px
+
+.interactive-map__card-title
+  padding-right: 1.5rem
+  font-size: 25px
+  font-weight: 400
+  line-height: 30px
+  letter-spacing: 1px
+
+.interactive-map__card-text
+  font-size: 18px
+  font-weight: 300
+  line-height: 28px
+  letter-spacing: 0.5px
+
+  @media (min-width: theme('screens.md'))
+    font-size: 20px
+    line-height: 32px
+
+.interactive-map__card-button
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 237px
+  max-width: 100%
+  margin-top: 14px
+  padding: 12px 1rem
+  background: theme('colors.montela-sage')
+  color: theme('colors.montela-cream')
+  font-size: 14px
+  font-weight: 700
+  letter-spacing: 0.84px
+  text-transform: uppercase
+  transition: background-color 0.2s ease
+
+  &:hover,
+  &:focus-visible
+    background: theme('colors.montela-brown')
+
+@media (prefers-reduced-motion: reduce)
+  .interactive-map__pin::after,
+  .interactive-map__control
+    transition: none
+    animation: none !important

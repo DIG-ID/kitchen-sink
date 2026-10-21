@@ -17,6 +17,9 @@ module.exports = {
     fontFamily: {
       primary: ['Inter', 'sans-serif'],   // replace per project
       secondary: ['Inter', 'sans-serif'], // replace per project
+      // Montela Map test: FreightBig Pro (Adobe Fonts) falls back to Georgia until a kit is added
+      'montela-serif': ['freight-big-pro', 'Georgia', 'serif'],
+      'montela-sans': ['Roboto', 'sans-serif'],
     },
 
     extend: {
@@ -28,6 +31,10 @@ module.exports = {
         // project colors
         primary: '#00CCCC',
         secondary: '#12232B',
+        // Montela Map test colors
+        'montela-sage': '#8F9B87',
+        'montela-brown': '#4E3C2A',
+        'montela-cream': '#F8F8F2',
         // dig.id colors (admin/login branding)
         'digid-turquoise': '#00CCCC',
         'digid-light-grey': '#F8F8F8',

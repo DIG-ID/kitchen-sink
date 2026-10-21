@@ -11,6 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/) (`MAJOR.M
 
 ---
 
+## [1.2.0] — 2026-10-21
+
+### Added
+- "Montela Map" page template with hero and map section (test for a new project).
+- Interactive map module: zoom, pan, fullscreen and a detail popup per pin, managed via ACF.
+
+### Changed
+- Web fonts now load Roboto (300–700) from Google Fonts.
+
+---
+
 ## [1.1.0] — 2026-10-20
 
 ### Added

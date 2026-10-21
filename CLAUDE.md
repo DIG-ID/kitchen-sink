@@ -121,6 +121,13 @@ Antes de entregar código PHP, verificar com `npm run php:lint`. Usar `npm run p
 
 > **A preencher**: documentar aqui os field groups reais (CPTs e page templates), com nome do campo, tipo e formato de retorno (ex.: image → ID, link → array).
 
+### Page Template `page-templates/page-montela-map.php` — Montela Map CF (teste)
+JSON de importação e script de seed (WP-CLI) em `Montela Map/` (pasta gitignored).
+- `hero` group: `title` (text)
+- `map_section` group: `title` (text), `description` (textarea), `button` (link → array), `map_image` (image → ID)
+  - `pins` (repeater): `label`, `x`, `y` (number, % da imagem), `title`, `description`, `button` (link → array)
+  - `features` (repeater): `icon` (select: `gondola`/`bus`/`parking`/`playground`/`lounge`/`village` → `assets/images/montela-map/feature-*.svg`), `text`
+
 ---
 
 ## SEO / Schema

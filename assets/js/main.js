@@ -15,6 +15,11 @@ import './gsap.js';
 import { debounce, isTouchDevice } from './utils/helpers.js';
 
 // =============================================================================
+// Modules
+// =============================================================================
+import { initInteractiveMaps } from './interactive-map.js';
+
+// =============================================================================
 // DOM ready
 // =============================================================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,5 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---------------------------------------------------
   // Project-specific initialisation goes here
   // ---------------------------------------------------
+  initInteractiveMaps();
 
 });

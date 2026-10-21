@@ -12,10 +12,10 @@
 // Font provider configuration — set per project.
 // Options: 'google' | 'adobe' | 'none'.
 if ( ! defined( 'DIGID_FONT_PROVIDER' ) ) {
-	define( 'DIGID_FONT_PROVIDER', 'none' );
+	define( 'DIGID_FONT_PROVIDER', 'google' );
 }
 if ( ! defined( 'DIGID_GOOGLE_FONTS_URL' ) ) {
-	define( 'DIGID_GOOGLE_FONTS_URL', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap' );
+	define( 'DIGID_GOOGLE_FONTS_URL', 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap' );
 }
 if ( ! defined( 'DIGID_ADOBE_FONTS_ID' ) ) {
 	define( 'DIGID_ADOBE_FONTS_ID', '' ); // Typekit kit ID, e.g. 'abc1234'.
