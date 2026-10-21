@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/) (`MAJOR.M
 
 ---
 
+## [1.3.1] — 2026-10-21
+
+### Fixed
+- Reset icon on the map controls is now centred.
+
+---
+
 ## [1.3.0] — 2026-10-21
 
 ### Added
