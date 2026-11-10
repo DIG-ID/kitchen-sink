@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/) (`MAJOR.M
 
 ---
 
+## [1.3.2] — 2026-11-10
+
+### Added
+- GitHub Actions release workflow (`.github/workflows/release.yml`): on every `v*` tag it checks the tag against `style.css`, builds with `npm run prod`, and publishes a release with `kitchen-sink.zip` for the dig.id Theme Updater.
+- `.distignore`: defines what stays out of the release zip (sources, dev dependencies, tooling and docs).
+
+---
+
 ## [1.3.1] — 2026-10-21
 
 ### Fixed

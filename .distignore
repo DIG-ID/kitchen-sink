@@ -1,0 +1,37 @@
+# Everything listed here is left OUT of the release zip (see .github/workflows/release.yml).
+# Repo / tooling
+.git
+.github
+.gitignore
+.gitattributes
+.distignore
+.editorconfig
+.vscode
+.claude
+dist-zip
+dist/hot
+
+# Dependencies (composer only has dev deps; vendor never goes to production)
+node_modules
+vendor
+composer.json
+composer.lock
+package.json
+package-lock.json
+
+# Build config / sources compiled by Vite into dist/
+vite.config.mjs
+tailwind.config.js
+assets/sass
+*.map
+
+# Dev docs / lint config
+README.md
+CHANGELOG.md
+CLAUDE.md
+SETUP.md
+WORKFLOW.md
+phpcs.xml.dist
+
+# Local-only
+Montela Map

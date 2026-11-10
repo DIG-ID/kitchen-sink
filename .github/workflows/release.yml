@@ -1,0 +1,79 @@
+# Copy to .github/workflows/release.yml in the THEME repository.
+#
+# On every pushed tag v* (e.g. v1.4.0):
+#   1. checks that the tag matches the Version in style.css;
+#   2. compiles the assets (npm run build);
+#   3. creates <slug>.zip with a single <slug>/ folder inside it;
+#   4. publishes a GitHub release with the zip attached (this fires the webhook to the sites).
+#
+# Variables (Settings → Secrets and variables → Actions → Variables):
+#   THEME_SLUG   theme folder name on WordPress (default: repository name)
+#   NODE_VERSION default: 20
+#   BUILD_SCRIPT npm script that builds production assets (default: build; e.g. prod)
+
+name: Theme release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      THEME_SLUG: ${{ vars.THEME_SLUG || github.event.repository.name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the version in style.css
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          CSS_VERSION=$(grep -m1 -E '^[[:space:]*]*Version:' style.css | sed -E 's/^[^:]*:[[:space:]]*//' | tr -d '\r[:space:]')
+          echo "tag=$TAG_VERSION style.css=$CSS_VERSION"
+          if [ "$TAG_VERSION" != "$CSS_VERSION" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match Version: $CSS_VERSION in style.css"
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        if: hashFiles('package.json') != ''
+        with:
+          node-version: ${{ vars.NODE_VERSION || '20' }}
+          cache: npm
+
+      - name: Build
+        if: hashFiles('package.json') != ''
+        env:
+          BUILD_SCRIPT: ${{ vars.BUILD_SCRIPT || 'build' }}
+        run: |
+          if ! node -e "process.exit(require('./package.json').scripts?.[process.env.BUILD_SCRIPT] ? 0 : 1)"; then
+            echo "::warning::Script \"$BUILD_SCRIPT\" not found in package.json; skipping build (using the committed assets)."
+            exit 0
+          fi
+          npm ci
+          npm run "$BUILD_SCRIPT"
+
+      - name: Create the zip
+        run: |
+          mkdir -p "dist-zip/$THEME_SLUG"
+          if [ -f .distignore ]; then
+            rsync -a --exclude-from=.distignore ./ "dist-zip/$THEME_SLUG/"
+          else
+            rsync -a \
+              --exclude='.git' --exclude='.github' --exclude='node_modules' --exclude='dist-zip' \
+              --exclude='.gitignore' --exclude='.editorconfig' --exclude='*.map' \
+              ./ "dist-zip/$THEME_SLUG/"
+          fi
+          cd dist-zip && zip -rq "../$THEME_SLUG.zip" "$THEME_SLUG"
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "$THEME_SLUG.zip" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes \
+            --verify-tag
